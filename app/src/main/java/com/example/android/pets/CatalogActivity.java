@@ -21,7 +21,8 @@ import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 
-public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CatalogActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int PET_LOADER = 0;
 
@@ -44,6 +45,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         ListView petListView = findViewById(R.id.list);
 
+        View emptyView = findViewById(R.id.empty_view);
+        petListView.setEmptyView(emptyView);
+
         mCursorAdapter = new PetCursorAdapter(this, null);
         petListView.setAdapter(mCursorAdapter);
 
@@ -55,10 +59,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
 
                 /**form the content URI that represent the specific pet that was clicked on,
-                by appending the "id" (passed as input to this method) onto the
-                {@link PetEntry#CONTENT_URI}
-                for example.the URI  would be "content://com.example.android.pets/pet/2
-                if the pet with ID 2 was clicked on*/
+                 by appending the "id" (passed as input to this method) onto the
+                 {@link PetEntry#CONTENT_URI}
+                 for example.the URI  would be "content://com.example.android.pets/pet/2
+                 if the pet with ID 2 was clicked on*/
                 Uri currentPetUri = ContentUris.withAppendedId(PetEntry.CONTENT_URI, id);
 
                 /**set the URI on the data field of the intent*/
@@ -78,9 +82,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+        getContentResolver().insert(PetEntry.CONTENT_URI, values);
     }
-
+    //this method deletes all pets from the database
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
