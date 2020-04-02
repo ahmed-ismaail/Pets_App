@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EmptyViewComponent">
+        <attr name="Image" format="integer"/>
+        <attr name="lonelyTextView" format="string"/>
+        <attr name="text2" format="string"/>
+    </declare-styleable>
+</resources>

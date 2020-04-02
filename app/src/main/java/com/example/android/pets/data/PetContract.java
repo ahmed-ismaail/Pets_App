@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+//this class used to define database constants
 public final class PetContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.android.pets";
