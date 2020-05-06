@@ -17,10 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.pets.data.ClerkContract;
 import com.example.android.pets.data.PetDbHelper;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText nameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
+    EditText nameEditText, emailEditText;
+    TextInputLayout passwordTextInput, confirmPasswordTextInput;
     Button registerButton;
     private PetDbHelper mDbHelper;
 
@@ -35,36 +39,28 @@ public class RegisterActivity extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.name_editText);
         emailEditText = findViewById(R.id.email_editText);
-        passwordEditText = findViewById(R.id.password_editText);
-        confirmPasswordEditText = findViewById(R.id.confirmPassword_editText);
+        passwordTextInput = findViewById(R.id.password_editText);
+        confirmPasswordTextInput = findViewById(R.id.confirmPassword_editText);
         registerButton = findViewById(R.id.register_button);
 
-        if (TextUtils.isEmpty(nameEditText.getText())) {
-            nameEditText.setError("name is required");
-        }
-        if (TextUtils.isEmpty(emailEditText.getText())) {
-            emailEditText.setError("email is required");
-        }
-        if (TextUtils.isEmpty(passwordEditText.getText())) {
-            passwordEditText.setError("password is required");
-        }
-        if (TextUtils.isEmpty(confirmPasswordEditText.getText())) {
-            confirmPasswordEditText.setError("confirm password is required");
-        }
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(nameEditText.getText()) || TextUtils.isEmpty(emailEditText.getText()) ||
-                        TextUtils.isEmpty(passwordEditText.getText()) || TextUtils.isEmpty(confirmPasswordEditText.getText())) {
+                String name = nameEditText.getText().toString();
+                String email = emailEditText.getText().toString();
+                String password = Objects.requireNonNull(passwordTextInput.getEditText()).getText().toString();
+                String confirmPassword = Objects.requireNonNull(confirmPasswordTextInput.getEditText()).getText().toString();
+
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) ||
+                    TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)){
                     Toast.makeText(RegisterActivity.this, "you have to fill all fields", Toast.LENGTH_SHORT).show();
-                } else if (!TextUtils.isEmpty(passwordEditText.getText()) && !TextUtils.isEmpty(confirmPasswordEditText.getText()) &&
-                        !passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
-                    confirmPasswordEditText.setError("password doesn't match");
-                } else if (!TextUtils.isEmpty(emailEditText.getText()) &&
-                        !Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText().toString()).matches()) {
+                } else if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirmPassword) &&
+                        !password.equals(confirmPassword)) {
+                    Toast.makeText(RegisterActivity.this, "password doesn't match", Toast.LENGTH_SHORT).show();
+                } else if (!TextUtils.isEmpty(email) && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     emailEditText.setError("Invalid email");
-                } else if (isAlreadyExist(emailEditText.getText().toString())) {
+                } else if (isAlreadyExist(email)) {
                     emailEditText.setError("email already exist choose another one ");
                 } else {
                     addClerk();
@@ -79,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(ClerkContract.ClerkEntry.COLUMN_CLERK_NAME, nameEditText.getText().toString());
         values.put(ClerkContract.ClerkEntry.COLUMN_CLERK_EMAIL, emailEditText.getText().toString());
-        values.put(ClerkContract.ClerkEntry.COLUMN_CLERK_PASSWORD, passwordEditText.getText().toString());
+        values.put(ClerkContract.ClerkEntry.COLUMN_CLERK_PASSWORD, Objects.requireNonNull(passwordTextInput.getEditText()).getText().toString());
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         database.insert(ClerkContract.ClerkEntry.TABLE_NAME, null, values);
