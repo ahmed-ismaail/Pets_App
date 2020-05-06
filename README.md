@@ -43,5 +43,5 @@ the License.
 
 Screenshots
 -----------
-![](ScreenShots/Screenshot_2019-11-01-20-38-15.png)![](ScreenShots/Screenshot_2019-11-01-20-38-32.png)![](ScreenShots/Screenshot_2019-11-01-20-38-44.png)![](ScreenShots/Screenshot_2019-11-01-20-38-59.png)
+<img src="ScreenShots/Screenshot_2019-11-01-20-38-15.png" width="200"/> <img src="ScreenShots/Screenshot_2019-11-01-20-38-32.png" width="200"/> <img src="ScreenShots/Screenshot_2019-11-01-20-38-44.png" width="200"/> <img src="ScreenShots/Screenshot_2019-11-01-20-38-59.png" width="200"/>
 
