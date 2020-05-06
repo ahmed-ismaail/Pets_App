@@ -114,10 +114,7 @@ public class CatalogActivity extends AppCompatActivity
             }
         });
 
-        getLoaderManager().
-
-                initLoader(PET_LOADER, null, this);
-
+        getLoaderManager().initLoader(PET_LOADER, null, this);
     }
 
     @Override

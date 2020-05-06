@@ -1,7 +1,6 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
-import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,20 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.pets.data.ClerkContract;
-import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetDbHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -72,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             nameEditText.setText(name);
             emailEditText.setText(email);
+            phoneEditText.setHint("");
         } else {
             //this email is coming from the logIn page
             cursor = getClerk(LoginActivity.EMAIL);
@@ -79,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
             clerkId = cursor.getInt(0);
             nameEditText.setText(cursor.getString(1));
             emailEditText.setText(cursor.getString(2));
-            passwordEditText.getEditText().setText(cursor.getString(3));
+            Objects.requireNonNull(passwordEditText.getEditText()).setText(cursor.getString(3));
             phoneEditText.setText(cursor.getString(4));
         }
 
