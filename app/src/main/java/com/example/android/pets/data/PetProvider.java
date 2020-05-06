@@ -16,7 +16,7 @@ public class PetProvider extends ContentProvider {
     //@PETS is an integer code that matches the pets table
     private static final int PETS = 100;
 
-    //@PET_ID is an integer code that matches the row number
+    //@COLUMN_PET_ID is an integer code that matches the row number
     private static final int PET_ID = 101 ;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -55,7 +55,7 @@ public class PetProvider extends ContentProvider {
                         null, null, sortOrder);
                 break;
             case PET_ID:
-                // For the PET_ID code, extract out the ID from the URI.
+                // For the COLUMN_PET_ID code, extract out the ID from the URI.
                 // For an example URI such as "content://com.example.android.pets/pets/3",
                 // the selection will be "_id=?" and the selection argument will be a
                 // String array containing the actual ID of 3 in this case.

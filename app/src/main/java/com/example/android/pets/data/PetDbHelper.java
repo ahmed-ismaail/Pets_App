@@ -20,6 +20,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.pets.data.PetContract.PetEntry;
+import com.example.android.pets.data.ClerkContract.ClerkEntry;
+import com.example.android.pets.data.FoodContract.FoodEntry;
+import com.example.android.pets.data.OwnerContract.OwnerEntry;
 
 /**
  * Database helper for Pets app. Manages database creation and version management.
@@ -29,7 +32,7 @@ public class PetDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "shelter.db";
 
     //if you change the database schema you must change the database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 10;
 
     public PetDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,15 +44,44 @@ public class PetDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create a String that contains the SQL statement to create the pets table
-        String SQL_CREATE_PETS_TABLE =  "CREATE TABLE " + PetEntry.TABLE_NAME + " ("
+        String SQL_CREATE_PETS_TABLE = "CREATE TABLE " + PetEntry.TABLE_NAME + " ("
                 + PetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + PetEntry.COLUMN_PET_NAME + " TEXT NOT NULL, "
                 + PetEntry.COLUMN_PET_BREED + " TEXT, "
                 + PetEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL, "
                 + PetEntry.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";
 
+        // Create a String that contains the SQL statement to create the clerk table
+        String SQL_CREATE_CLERK_TABLE = "CREATE TABLE " + ClerkEntry.TABLE_NAME + " ("
+                + ClerkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ClerkEntry.COLUMN_CLERK_NAME + " TEXT NOT NULL, "
+                + ClerkEntry.COLUMN_CLERK_EMAIL + " TEXT NOT NULL, "
+                + ClerkEntry.COLUMN_CLERK_PASSWORD + " TEXT NOT NULL, "
+                + ClerkEntry.COLUMN_CLERK_PHONE + " TEXT);";
+
+        // Create a String that contains the SQL statement to create the FOOD table
+        String SQL_CREATE_FOOD_TABLE = "CREATE TABLE " + FoodEntry.TABLE_NAME + " ("
+                + FoodEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FoodEntry.COLUMN_FOOD_NAME + " TEXT NOT NULL, "
+                + FoodEntry.COLUMN_FOOD_AMOUNT + " INTEGER NOT NULL, "
+                + FoodEntry.COLUMN_FOOD_TIMES_PER_DAY + " INTEGER NOT NULL, "
+                + FoodEntry.COLUMN_PET_ID + " INTEGER NOT NULL, "
+                + " FOREIGN KEY( " + FoodEntry.COLUMN_PET_ID + " ) REFERENCES " + PetEntry.TABLE_NAME + " ( " + PetEntry._ID + " ));";
+
+        // Create a String that contains the SQL statement to create the Owner table
+        String SQL_CREATE_OWNER_TABLE = "CREATE TABLE " + OwnerEntry.TABLE_NAME + " ("
+                + OwnerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + OwnerEntry.COLUMN_OWNER_NAME + " TEXT NOT NULL, "
+                + OwnerEntry.COLUMN_OWNER_EMAIL + " TEXT NOT NULL, "
+                + OwnerEntry.COLUMN_OWNER_PHONE + " TEXT NOT NULL, "
+                + OwnerEntry.COLUMN_PET_ID + " INTEGER NOT NULL, "
+                + " FOREIGN KEY( " + OwnerEntry.COLUMN_PET_ID + " ) REFERENCES " + PetEntry.TABLE_NAME + " ( " + PetEntry._ID + " ));";
+
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_PETS_TABLE);
+        db.execSQL(SQL_CREATE_CLERK_TABLE);
+        db.execSQL(SQL_CREATE_FOOD_TABLE);
+        db.execSQL(SQL_CREATE_OWNER_TABLE);
     }
 
     /**
@@ -57,6 +89,11 @@ public class PetDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // The database is still at version 1, so there's nothing to do be done here.
+        db.execSQL("drop table if exists " + ClerkEntry.TABLE_NAME);
+        db.execSQL("drop table if exists " + PetEntry.TABLE_NAME);
+        db.execSQL("drop table if exists " + FoodEntry.TABLE_NAME);
+        db.execSQL("drop table if exists " + OwnerEntry.TABLE_NAME);
+
+        onCreate(db);
     }
 }

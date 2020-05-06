@@ -1,6 +1,7 @@
 package com.example.android.pets;
 
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -10,14 +11,17 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mBreedEditText;
     private EditText mWeightEditText;
     private Spinner mGenderSpinner;
+    private Button foodButton, ownerButton;
 
     private int mGender = PetEntry.GENDER_UNKNOWN;
 
@@ -61,7 +66,34 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mBreedEditText = findViewById(R.id.edit_pet_breed);
         mWeightEditText = findViewById(R.id.edit_pet_weight);
         mGenderSpinner = findViewById(R.id.spinner_gender);
+        foodButton = findViewById(R.id.Food_button);
+        ownerButton = findViewById(R.id.Owner_button);
 
+        foodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentPetUri == null) {
+                    Toast.makeText(EditorActivity.this, "you have to add a Pet first", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(EditorActivity.this, FoodActivity.class);
+                    intent.setData(mCurrentPetUri);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        ownerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentPetUri == null) {
+                    Toast.makeText(EditorActivity.this, "you have to add a Pet first", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(EditorActivity.this, OwnerActivity.class);
+                    intent.setData(mCurrentPetUri);
+                    startActivity(intent);
+                }
+            }
+        });
 
         setupSpinner();
     }
@@ -297,7 +329,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
 
 }

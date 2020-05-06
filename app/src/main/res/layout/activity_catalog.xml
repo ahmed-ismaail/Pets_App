@@ -7,7 +7,7 @@
     tools:context=".CatalogActivity">
 
 
-    <com.example.android.pets.data.EmptyViewComponent
+    <com.example.android.pets.EmptyViewComponent
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -15,7 +15,7 @@
         app:lonelyTextView="@string/empty_view_title_text"
         app:text2="@string/empty_view_subtitle_text">
 
-    </com.example.android.pets.data.EmptyViewComponent>
+    </com.example.android.pets.EmptyViewComponent>
 
     <ListView
         android:id="@+id/list"
@@ -25,7 +25,7 @@
 
     </ListView>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

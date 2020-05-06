@@ -1,15 +1,25 @@
 package com.example.android.pets;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,8 +28,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-
 import com.example.android.pets.data.PetContract.PetEntry;
+
+import java.util.Calendar;
+import java.util.Objects;
 
 public class CatalogActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -28,11 +40,38 @@ public class CatalogActivity extends AppCompatActivity
 
     PetCursorAdapter mCursorAdapter;
 
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail().build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //----------------------------------------------
+        //local push notification
+        if (Objects.equals(getIntent().getStringExtra("Activity"), "LogIn")) {
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent notificationIntent = new Intent(this, AlarmReceiver.class);
+            PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.SECOND, 2);
+
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        }
+        //----------------------------------------------
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +87,9 @@ public class CatalogActivity extends AppCompatActivity
         View emptyView = findViewById(R.id.empty_view);
         petListView.setEmptyView(emptyView);
 
-        mCursorAdapter = new PetCursorAdapter(this, null);
+        mCursorAdapter = new
+
+        PetCursorAdapter(this, null);
         petListView.setAdapter(mCursorAdapter);
 
         //this method trigger when you click on the list item
@@ -72,18 +113,31 @@ public class CatalogActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        getLoaderManager().initLoader(PET_LOADER, null, this);
+
+        getLoaderManager().
+
+                initLoader(PET_LOADER, null, this);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 
     private void insertPet() {
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
-        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
+        values.put(PetEntry.COLUMN_PET_BREED, "Dog");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
         getContentResolver().insert(PetEntry.CONTENT_URI, values);
     }
+
     //this method deletes all pets from the database
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
@@ -105,17 +159,25 @@ public class CatalogActivity extends AppCompatActivity
             case R.id.action_delete_all_entries:
                 deleteAllPets();
                 return true;
+            case R.id.signOutItem:
+                mGoogleSignInClient.signOut();
+                Intent signOutIntent = new Intent(CatalogActivity.this, LoginActivity.class);
+                startActivity(signOutIntent);
+                return true;
+            case R.id.profileItem:
+                Intent intent = new Intent(CatalogActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
-                PetEntry.COLUMN_PET_BREED };
+                PetEntry.COLUMN_PET_BREED};
 
         return new CursorLoader(this,
                 PetEntry.CONTENT_URI,

@@ -13,4 +13,15 @@
         android:id="@+id/action_delete_all_entries"
         android:title="@string/action_delete_all_entries"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/signOutItem"
+        android:title="@string/sign_out"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/profileItem"
+        android:title="@string/profile"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_account_circle_black_24dp"/>
 </menu>

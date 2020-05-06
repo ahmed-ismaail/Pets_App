@@ -1,10 +1,10 @@
-package com.example.android.pets.data;
+package com.example.android.pets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleableRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
