@@ -23,11 +23,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText emailEditText, passwordEditText;
+    EditText emailEditText;
+    TextInputLayout passwordTextInput;
     Button loginButton, registerButton;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
@@ -58,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         emailEditText = findViewById(R.id.LoginEmail_editText);
-        passwordEditText = findViewById(R.id.LoginPassword_editText);
+        passwordTextInput = findViewById(R.id.LoginPassword_editText);
         loginButton = findViewById(R.id.login_btn);
         registerButton = findViewById(R.id.register_btn);
 
@@ -67,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailEditText.getText().toString();
                 EMAIL = email;//this is used in Edit Account page
-                String password = passwordEditText.getText().toString();
+                String password = Objects.requireNonNull(passwordTextInput.getEditText()).getText().toString();
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(LoginActivity.this, "you have to enter email and password", Toast.LENGTH_SHORT).show();
