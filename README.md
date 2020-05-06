@@ -43,5 +43,5 @@ the License.
 
 Screenshots
 -----------
-<img src="ScreenShots/LogInPage.PNG" width="200"/> <img src="ScreenShots/RegisterPage.PNG" width="200"/> <img src="ScreenShots/AccountPage.PNG" width="200"/><img src="ScreenShots/CatalogEmptyPage.PNG" width="200"/> <img src="ScreenShots/CatalogPage.PNG" width="200"/> <img src="ScreenShots/EditorPage.PNG" width="200"/> <img src="ScreenShots/FoodPage.PNG" width="200"/> <img src="ScreenShots/OwnerPage.PNG" width="200"/>
+<img src="ScreenShots/LogInPage.PNG" width="200"/> <img src="ScreenShots/RegisterPage.PNG" width="200"/> <img src="ScreenShots/AccountPage.PNG" width="200"/> <img src="ScreenShots/CatalogEmptyPage.PNG" width="200"/> <img src="ScreenShots/CatalogPage.PNG" width="200"/> <img src="ScreenShots/EditorPage.PNG" width="200"/> <img src="ScreenShots/FoodPage.PNG" width="200"/> <img src="ScreenShots/OwnerPage.PNG" width="200"/>
 
